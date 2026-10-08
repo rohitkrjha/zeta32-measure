@@ -66,6 +66,8 @@ The GitHub Actions workflow checks publication-file integrity only. It does not 
 
 Use the repository's **Cite this repository** control or [CITATION.cff](CITATION.cff). Version v2 identifies the manuscript and source package in this release. A Zenodo DOI will be added once the corresponding record has been reserved or published; no DOI is claimed here.
 
+The first Zenodo deposit is prepared as version v1, corresponding to GitHub release v2; it has not yet been published on Zenodo. The deposited files retain their GitHub release filenames and bundled README version label so that all five files match the release byte-for-byte. These are separate version labels; do not substitute the earlier GitHub release for the prepared deposit.
+
 Substantive changes to the manuscript or proof will receive a new release rather than changing the v2 tag. Later citation-only metadata updates may appear on the main branch without changing the v2 mathematical sources.
 
 ## Provenance and licenses
