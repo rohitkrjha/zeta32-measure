@@ -1,21 +1,21 @@
 cff-version: 1.2.0
 message: "Please cite the accompanying paper when using these results."
 type: software
-title: "An explicit irrationality-exponent bound for ζ(3) − rζ(2): A Lean-verified quantitative extension — manuscript and Lean sources"
+title: "An explicit irrationality-exponent bound for ζ(3) − rζ(2) — manuscript and Lean sources"
 authors:
   - family-names: Jha
     given-names: Rohit Kumar
-version: v1
+version: v2
 repository-code: "https://github.com/rohitkrjha/zeta32-measure"
 url: "https://github.com/rohitkrjha/zeta32-measure"
 license-url: "https://github.com/rohitkrjha/zeta32-measure/blob/main/LICENSE"
 preferred-citation:
   type: unpublished
   status: preprint
-  title: "An explicit irrationality-exponent bound for ζ(3) − rζ(2): A Lean-verified quantitative extension"
+  title: "An explicit irrationality-exponent bound for ζ(3) − rζ(2)"
   authors:
     - family-names: Jha
       given-names: Rohit Kumar
   year: 2026
-  version: v1
-  url: "https://github.com/rohitkrjha/zeta32-measure/releases/tag/v1"
+  version: v2
+  url: "https://github.com/rohitkrjha/zeta32-measure/releases/tag/v2"

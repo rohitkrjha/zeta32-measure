@@ -1,8 +1,12 @@
-# An explicit irrationality-exponent bound for ζ(3) − rζ(2): A Lean-verified quantitative extension
+# An explicit irrationality-exponent bound for ζ(3) − rζ(2)
 
 Rohit Kumar Jha
 
-[Read the paper](release/zeta32-measure-v1.pdf) · [Version v1](https://github.com/rohitkrjha/zeta32-measure/releases/tag/v1) · [LaTeX source](sources/main.tex) · [Lean project](sources/anc/lean)
+[Read the paper](release/zeta32-measure-v2.pdf) · [Version v2](https://github.com/rohitkrjha/zeta32-measure/releases/tag/v2) · [LaTeX source](sources/main.tex) · [Lean project](sources/anc/lean)
+
+## Version v2
+
+This revision removes the subtitle, expands the rational matrix definitions and energy estimates, and reorganizes the proof and supporting documentation. The theorem statements and mathematical Lean sources are unchanged. The original [v1 release](https://github.com/rohitkrjha/zeta32-measure/releases/tag/v1) is preserved.
 
 ## Result
 
@@ -52,7 +56,7 @@ The pinned versions and source provenance are documented in [the ancillary READM
 
 ## Verification
 
-The v1 checks passed the Lean build, a transitive axiom audit of 123 extension theorems, and a fresh-environment Lean-kernel replay of 21 selected roots and their closure of 82,674 declarations. Only propext, Classical.choice, and Quot.sound were permitted. The replay includes the denominator theorem and the irrationality-exponent corollary; the final direct determinant proof does not assume the earlier all-minors hypothesis.
+The v2 checks passed the Lean build, a transitive axiom audit of 123 extension theorems, and a fresh-environment Lean-kernel replay of 21 selected roots and their closure of 82,674 declarations. Only propext, Classical.choice, and Quot.sound were permitted. The replay includes the denominator theorem and the irrationality-exponent corollary; the final direct determinant proof does not assume the earlier all-minors hypothesis.
 
 These checks reused pinned dependency/build caches; they were not clean-machine installations or full Mathlib source rebuilds. The replay uses Lean's own kernel.
 
@@ -60,9 +64,9 @@ The GitHub Actions workflow checks publication-file integrity only. It does not 
 
 ## Citation and versions
 
-Use the repository's **Cite this repository** control or [CITATION.cff](CITATION.cff). Version v1 identifies the manuscript and source package in this release. A Zenodo DOI will be added once the corresponding record has been reserved or published; no DOI is claimed here.
+Use the repository's **Cite this repository** control or [CITATION.cff](CITATION.cff). Version v2 identifies the manuscript and source package in this release. A Zenodo DOI will be added once the corresponding record has been reserved or published; no DOI is claimed here.
 
-Substantive changes to the manuscript or proof will receive a new release rather than changing the v1 tag. Later citation-only metadata updates may appear on the main branch without changing the v1 mathematical sources.
+Substantive changes to the manuscript or proof will receive a new release rather than changing the v2 tag. Later citation-only metadata updates may appear on the main branch without changing the v2 mathematical sources.
 
 ## Provenance and licenses
 

@@ -1,15 +1,15 @@
-An explicit irrationality-exponent bound for ζ(3) − rζ(2): A Lean-verified quantitative extension
+An explicit irrationality-exponent bound for ζ(3) − rζ(2)
 ====================================================
 
 Author: Rohit Kumar Jha
-Version: v1
+Version: v2
 
 FILES
 
-  zeta32-measure-v1.pdf
+  zeta32-measure-v2.pdf
       The research manuscript.
 
-  zeta32-measure-v1-sources.zip
+  zeta32-measure-v2-sources.zip
       LaTeX manuscript sources and the supporting Lean source project.
       Extract into an empty directory. The manuscript is main.tex; the
       formalization is in anc/lean. See anc/README.txt for source provenance,
