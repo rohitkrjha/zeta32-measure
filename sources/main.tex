@@ -1,0 +1,524 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref}
+\usepackage{xurl}
+\usepackage[T1]{fontenc}
+\hypersetup{hidelinks,pdfauthor={Rohit Kumar Jha},
+  pdftitle={An explicit irrationality-exponent bound for zeta(3) - r zeta(2)}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\diag}{diag}
+\title{An explicit irrationality-exponent bound for
+  $\zeta(3)-r\zeta(2)$\\\large A Lean-verified quantitative extension}
+\author{Rohit Kumar Jha}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a quantitative extension of Qian Tang's
+determinant proof of the irrationality of $\zeta(3)-r\zeta(2)$ for fixed
+$r\in\Q$. The new ingredient is a positive-Gram comparison with an
+exponential lower bound on its smallest eigenvalue. Combined with the
+upstream arithmetic and energy estimates, this proves
+$2\leq\mu(\zeta(3)-r\zeta(2))\leq10000$, with an approximation threshold
+depending on $r$. A direct determinant comparison avoids any separate
+all-minors assumption. The denominator theorem and the exponent corollary
+have been verified in Lean and replayed in a fresh Lean-kernel environment;
+their axiom closures contain only the standard axioms. The exponent is
+not optimized.
+\end{abstract}
+
+\section{Statement, inputs, and attribution}
+
+For an irrational real number $x$, its irrationality exponent is
+\[
+ \mu(x)=\sup\{\nu>0:0<|x-a/q|<q^{-\nu}
+                 \text{ for infinitely many reduced }a/q\in\Q\}.
+\]
+The supremum is interpreted in the extended reals; the estimate proved
+below makes it finite for the numbers considered here. Our formal
+real-valued supremum is used only after its defining set is proved
+nonempty and bounded above. The principal conclusion is
+\[
+              2\leq\mu(\zeta(3)-r\zeta(2))\leq10000
+                  \qquad(r\in\Q\text{ fixed}).
+\]
+
+The starting point is Qian Tang's Lean development~\cite{Tang},
+\href{https://github.com/dtq1997/zeta2-zeta3-linear-independence/tree/669c92bf7a3728e0de9ad80c373bc29fb5ca3d58}
+{\emph{zeta2-zeta3-linear-independence}}, pinned to commit
+\begin{center}\texttt{669c92bf7a3728e0de9ad80c373bc29fb5ca3d58}.\end{center}
+It builds on Fauzan's determinant method. Its stated endpoint is qualitative
+irrationality for every rational $r$, equivalently the linear independence
+of $1,\zeta(2),\zeta(3)$ over $\Q$.
+The source declares Lean v4.35.0-rc3 and Mathlib revision
+\begin{center}\texttt{c55e6e786f49471c72fbddbec5415808896aec1e}.\end{center}
+
+We use its arithmetic-content theorem and prime-edge nonvanishing theorem
+as imported mathematical inputs. Its energy proof is strengthened below by
+retaining the positive integral already estimated in that proof. The Gram
+conditioning, slope bound, and perturbation argument supply the
+additional quantitative control needed here. Lean
+checks the strengthened positive-integral estimate, slope growth, actual
+Gram identities and conditioning, signed bilinear representation,
+determinant comparison, and the complete quantitative assembly. The
+original conditional minor-based route is retained in the source for
+comparison, but is not used to discharge the final endpoint.
+The elementary exponent-set lemmas and a Gram--Schmidt determinant lemma
+are adapted, with attribution in the source, from OpenAI's September 2026
+\emph{PiExponent} and \emph{Catalan} developments~\cite{OpenAI}. We do not claim those
+general lemmas as new.
+
+Throughout, $r\in\Q$ is fixed, $n\geq1$, and
+\[
+ \theta=\zeta(3)-r\zeta(2),\qquad h=3n,\qquad
+ D_m(t)=\prod_{j=1}^m(t+j),\qquad
+ R_n(t)=\frac{D_n(t)^4}{D_{5n}(t)}.
+\]
+Put
+\[
+ S_n=\frac{(5n)!}{(n!)^4},\quad
+ F_n=\prod_{j=0}^{h-1}(j!)^2,\quad
+ t(y)=\tfrac12+\ii y,
+\]
+\[
+ w_r(y)=\frac{\pi}{2}\sech^2(\pi y)
+        \bigl(2r-2\pi\ii\tanh(\pi y)\bigr),\qquad
+ \phi_n(y)=t(y)R_n(t(y))w_r(y).
+\]
+The upstream rational matrices $A_{r,n},B_n$ satisfy
+\begin{equation}\label{eq:entries}
+ (A_{r,n}+\theta B_n)_{jk}
+     =\int_\R t(y)^{j+k}\phi_n(y)\dd y,
+       \qquad 0\leq j,k<h.
+\end{equation}
+Define
+\[
+ Q_n(X)=\det(A_{r,n}+XB_n),\qquad
+ \widetilde Q_n(X)=\frac{S_n^h}{F_n}Q_n(X).
+\]
+There are $P_n\in\Z[X]$ and $d_n>0$ with
+\begin{equation}\label{eq:arith}
+ \deg P_n\leq3n,\qquad P_n=d_n\widetilde Q_n,
+ \qquad \log d_n\leq(283/50+\varepsilon)n^2
+\end{equation}
+for all sufficiently large $n$ with $Q_n\ne0$, for every $\varepsilon>0$.
+Here $d_n$ is the source's \texttt{dtilde}, not its \texttt{d}.
+
+There is a finite exceptional prime set $E$, independent of $n$, such that
+for every prime $p\geq7$ outside $E$ with $p\nmid\operatorname{den}(r)$,
+\begin{equation}\label{eq:edge}
+ P_{p-1}(X)\pmod p\quad\hbox{is a nonzero constant}.
+\end{equation}
+These inputs are respectively \texttt{arith\_node} and
+\texttt{prime\_edge\_node} in \texttt{Zeta32/Final.lean}.
+
+\section{Retaining the positive Heine integral}
+
+Let
+\[
+ f_j(y)=\frac{t(y)^j}{j!},\qquad
+ \rho_n(y)=S_n|\phi_n(y)|,\qquad
+ M_n=\left(\int_\R \overline{f_j(y)}f_k(y)\rho_n(y)\dd y\right)_{j,k<h}.
+\]
+All polynomial moments exist: the rational factor has no real-line poles
+on $t=1/2+\ii y$, has at most polynomial growth, and the hyperbolic kernel
+decays exponentially. The density is positive except possibly at $y=0$.
+Thus $M_n$ is a positive definite Hermitian matrix.
+
+Andr\'eief's identity and the Vandermonde determinant give
+\begin{equation}\label{eq:positive-integral}
+ \det M_n=\frac{S_n^h}{F_nh!}
+ \int_{\R^h}\prod_{\ell=1}^h|\phi_n(y_\ell)|
+       \prod_{\ell<m}(y_\ell-y_m)^2\dd y.
+\end{equation}
+The factorial denominator is exactly $F_n$, since it occurs once in
+each Vandermonde factor.
+
+\begin{lemma}[Positive energy estimate]\label{lem:energy}
+For every $\varepsilon>0$, eventually in $n$,
+\[
+                         \det M_n\leq e^{(-6+\varepsilon)n^2}.
+\]
+\end{lemma}
+\begin{proof}
+This is a strengthening of the \emph{conclusion} of the upstream analytic
+node, not a consequence of its signed-determinant conclusion alone.
+Here is the precise point at which the stronger quantity can be retained.
+Write $I_n$ for the nonnegative integral in
+\eqref{eq:positive-integral}, without its prefactor.
+The proof of \texttt{heine\_scaled} in
+\texttt{Zeta32/Analytic/Energy/Scaling.lean} establishes, for every integrable
+majorant $D$ of its scaled configuration integrand,
+\[
+ \frac{S_n^h}{F_n}I_n
+ \leq \exp\!\left(9(3/2-\log3)n^2+C_1n\log(n+1)\right)
+       \int_{\R^h}D(x)\dd x.
+\]
+Specifically, its estimates \texttt{hscale}, \texttt{hpt}, \texttt{hint},
+and the final coefficient estimate prove this inequality without using
+the signed determinant. The factor $1/h!\leq1$ may be discarded.
+
+The proof of \texttt{energy\_bound\_exp} in
+\texttt{Zeta32/Analytic/Energy/Assembly.lean} then constructs a nonnegative
+integrable $D$ with
+\[
+ \int D\leq
+ \exp\!\left(9(\ell-I)n^2+C_2n(\log(n+1)+1)\right)K^{3n},
+\]
+where $K\geq1$ and the verified energy certificate gives
+\[
+                 9(3/2-\log3)+9(\ell-I)\leq-6.
+\]
+The error is $O_r(n\log(n+1))=o(n^2)$. Combining these estimates with
+\eqref{eq:positive-integral} proves the assertion. The stronger integral
+estimate has now been extracted formally in our \texttt{Zeta32Extension}
+namespace as
+\begin{center}\texttt{positiveHeine\_eventually\_le}.\end{center}
+Its axiom closure contains only Lean's three standard axioms. Identification
+with the actual Gram determinant is now checked by
+\texttt{positiveGram\_det}.
+\end{proof}
+
+\section{An exponential lower bound for the Gram matrix}
+
+\begin{lemma}[Weight on a distant interval]\label{lem:weight}
+For $1\leq x\leq2$ and every integer $n\geq1$,
+\[
+                         n\rho_n(nx)\geq e^{-22n}.
+\]
+\end{lemma}
+\begin{proof}
+For $y\in[n,2n]$, every numerator factor of $R_n(t(y))$ has modulus
+at least $n$, and every denominator factor has modulus at most $8n$.
+The elementary factorial inequalities $m!\geq(m/e)^m$ and $n!\leq n^n$
+therefore give
+\[
+ S_n|R_n(t(y))|\geq
+       \left(\frac5{8e}\right)^{5n}\geq e^{-8n}.
+\]
+For the last inequality use $\log(8/5)\leq3/5$.
+Also $|t(y)|\geq n$, $\tanh(\pi y)\geq1/2$, and
+\[
+ |w_r(y)|\geq\frac{\pi^2}{2}e^{-2\pi y}
+             \geq e^{-4\pi n}.
+\]
+Indeed the imaginary part alone bounds the modulus of the second factor,
+and $\cosh u\leq e^u$ for $u\geq0$. Since $8+4\pi<22$ and $n^2\geq1$,
+the claimed bound follows, uniformly in $r$.
+\end{proof}
+
+\begin{lemma}[Polynomial coefficient recovery]\label{lem:poly}
+For $h=3n$ and $v\in\C^h$, let
+\[
+ p(s)=\sum_{j=0}^{h-1}\frac{v_j}{j!}
+                  \left(\tfrac12+\frac{\ii n(3+s)}2\right)^j.
+\]
+Then
+\[
+          \sum_{j<h}|v_j|^2\leq64h^5\,111132^h
+                    \int_{-1}^1|p(s)|^2\dd s.
+\]
+\end{lemma}
+\begin{proof}
+Write $M=\max_{[-1,1]}|p|$. A real polynomial $u$ of degree at most $h$
+and supremum at most $M$ on $[-1,1]$ has every coefficient bounded by
+$7^hM$. Here is a coefficient proof of this standard Chebyshev estimate.
+The extremal derivative inequality at $1$ bounds the absolute Taylor
+coefficients of $u$ by those of $MT_h$, which are nonnegative. Translating
+back from $1$ to $0$ costs at most $2^j$ for the $j$th Taylor coefficient.
+Their sum is $MT_h(3)\leq M7^h$, the final inequality following from the
+Chebyshev recurrence. Apply this to the real and imaginary coefficient
+polynomials of $p$ to obtain $|[s^j]p|\leq2\,7^hM$.
+
+For $s,t\in[-1,1]$, $|s^j-t^j|\leq j|s-t|$. Consequently
+\[
+ |p(s)-p(t)|\leq2h^2\,7^hM|s-t|.
+\]
+A one-sided interval of length $1/(4h^2 7^h)$ at a point where $|p|=M$
+lies inside $[-1,1]$ and has $|p|\geq M/2$. Therefore
+\[
+ M^2\leq16h^2\,7^h\int_{-1}^1|p(s)|^2\dd s.
+\]
+The zero case is immediate. Define
+\[
+ q(z)=\sum_{j<h}\frac{v_jn^j}{j!}z^j
+     =p(-3+\ii/n-2\ii z).
+\]
+The affine constant has modulus at most $4$ and the slope has modulus $2$.
+Every coefficient of its $j$th power has modulus at most $6^j$; hence
+$|[z^j]q|\leq2h42^hM$. Since $j!/n^j\leq3^h$ for $j<h=3n$,
+we get $|v_j|\leq2h126^hM$. Square, sum, and use the preceding integral
+estimate. The constant is $126^2\cdot7=111132$.
+This proof, including the maximum-to-integral estimate, is checked in
+\texttt{PolynomialConditioning.lean}.
+\end{proof}
+
+\begin{proposition}\label{prop:eigen}
+For all sufficiently large $n$, uniformly in $r$, the smallest eigenvalue of $M_n$ satisfies
+\[
+                         \lambda_{\min}(M_n)\geq e^{-60n}.
+\]
+\end{proposition}
+\begin{proof}
+Restrict the Gram quadratic form to $y\in[n,2n]$, substitute
+$y=n(3+s)/2$, and apply Lemmas~\ref{lem:weight} and \ref{lem:poly}:
+\[
+ v^*M_nv\geq\frac{e^{-22n}}{128h^5\,111132^h}\|v\|^2.
+\]
+Now $111132<e^{12}$ and $\log n=o(n)$ imply
+$128(3n)^5\,111132^{3n}\leq e^{38n}$ eventually. This proves the result.
+The full weighted-integral lower bound, the exact Gram quadratic-form
+identity, and the resulting matrix-form inequality are checked in
+\texttt{WeightedQuadratic.lean} and \texttt{GramQuadratic.lean}.
+\end{proof}
+
+\section{Slope growth and stability}
+
+Normalize the entire pencil entrywise by
+\[
+ H_n(X)_{jk}=\frac{S_n}{j!k!}(A_{r,n}+XB_n)_{jk},\qquad
+ T_n=H_n'(X).
+\]
+Then $\det H_n(X)=\widetilde Q_n(X)$. Notice that this determinant identity
+holds for all $X$, not only at $\theta$.
+
+\begin{lemma}[Normalized slope]\label{lem:slope}
+For $0\leq j,k<3n$,
+\[
+                             |(T_n)_{jk}|\leq e^{50n}.
+\]
+\end{lemma}
+\begin{proof}
+An exact binomial identity gives, for $1\leq a\leq5n$,
+\[
+ S_n\operatorname{Res}_{t=-a}R_n(t)
+  =(-1)^{a-1}5n\binom{5n-1}{a-1}\binom{a-1}{n}^{\!4}.
+\]
+This includes $a\leq n$, where both sides vanish. Since
+$\binom uv\leq2^u$, the absolute value is at most $5n\,2^{25n}$.
+The definition of $B_n$, followed by $(5n)^j/j!\leq e^{5n}$, gives
+\[
+ |(T_n)_{jk}|\leq250n^3\,2^{25n}
+           \frac{(5n)^j}{j!}\frac{(5n)^k}{k!}
+       \leq250n^3\,2^{25n}e^{10n}\leq e^{46n}\leq e^{50n}.
+\]
+For the penultimate step use $250\leq2^8\leq e^{8n}$, $n^3\leq e^{3n}$,
+and $2^{25n}\leq e^{25n}$. This proof is now formalized in
+\texttt{SlopeGrowth.lean}, with only the three standard axioms.
+\end{proof}
+
+There is also an independent contour derivation, useful for checking the
+normalizations. The definition of $B_n$ is the sum of $2a$ times the residues of
+$t^{j+k}R_n(t)$ at the poles $t=-a$, $1\leq a\leq5n$. Therefore, with
+Laurent coefficients taken at infinity,
+\[
+ (B_n)_{jk}=-2[t^{-j-k-2}]R_n(t).
+\]
+This follows by applying the residue identity to $t^{j+k+1}R_n(t)$;
+its polynomial part contributes no coefficient of $t^{-1}$.
+On $|t|=6n$ the numerator factors have modulus at most $7n$, and the
+denominator factors have modulus at least $n$. Cauchy's Laurent estimate
+thus gives
+\[
+ |(B_n)_{jk}|\leq 2(6n)^{j+k+2}7^{4n}n^{-n}.
+\]
+Also $S_n\leq5^{5n}e^{4n}n^n$, and $(6n)^j/j!\leq e^{6n}$.
+Hence
+\[
+ |(T_n)_{jk}|\leq72n^2
+       e^{(12+5\log5+4+4\log7)n}\leq e^{50n}.
+\]
+For example $\log5,\log7<2$ and $72n^2\leq e^{6n}$ already give
+the stronger intermediate bound $e^{40n}$.
+
+\begin{lemma}[Bilinear Gram comparison]\label{lem:comparison}
+Let $M$ be a positive definite Hermitian $h\times h$ matrix and let
+$B$ be a complex $h\times h$ matrix. If $C\geq0$ and
+\[
+       |u^{\mathsf T}Bv|\leq C\sqrt{u^*Mu}\sqrt{v^*Mv}
+                   \qquad(u,v\in\C^h),
+\]
+then $|\det B|\leq\det M\,C^h$.
+\end{lemma}
+\begin{proof}
+Choose an invertible matrix $W$ with $W^*MW=I$, for example the inverse
+positive square root. Set $L=W^{\mathsf T}BW$. The hypothesis implies
+$|u^{\mathsf T}Lv|\leq C\|u\|_2\|v\|_2$. Taking
+$u=\overline{Lv}$ gives $\|Lv\|_2^2\leq C\|Lv\|_2\|v\|_2$;
+therefore $\|L\|_{2\to2}\leq C$, including the case $Lv=0$.
+Hadamard's determinant inequality yields $|\det L|\leq C^h$.
+Taking determinants of $W^*MW=I$ gives
+$|\det W|^2\det M=1$, whereas
+$|\det L|=|\det W|^2|\det B|$. These identities give the result.
+The transpose in $W^{\mathsf T}BW$ is intentional: the original form
+is bilinear, not sesquilinear. This lemma is formally checked as
+\texttt{det\_le\_of\_bilinear\_gram}.
+\end{proof}
+
+For $F_v(y)=\sum_j v_jf_j(y)$, the exact signed representation is
+\[
+ u^{\mathsf T}H_n(\theta)v
+       =\int_\R F_u(y)F_v(y)S_n\phi_n(y)\dd y.
+\]
+Since $|S_n\phi_n|=\rho_n$, the integral triangle inequality and
+Cauchy--Schwarz give
+\[
+ |u^{\mathsf T}H_n(\theta)v|
+       \leq\sqrt{u^*M_nu}\sqrt{v^*M_nv}.
+\]
+All the needed square integrals are finite by the moment estimates already
+noted. Both this representation and this inequality are checked in
+\texttt{SignedBilinear.lean}.
+
+If a perturbation $E$ has entries bounded in modulus by $K\geq0$, then
+finite Cauchy--Schwarz and Proposition~\ref{prop:eigen} imply
+\[
+ |u^{\mathsf T}Ev|\leq K\Bigl(\sum_j|u_j|\Bigr)
+                          \Bigl(\sum_k|v_k|\Bigr)
+       \leq hK e^{60n}\sqrt{u^*M_nu}\sqrt{v^*M_nv}.
+\]
+Apply Lemma~\ref{lem:comparison} to $B=H_n(\theta)+E$:
+\begin{equation}\label{eq:perturb}
+       |\det(H_n(\theta)+E)|\leq\det M_n(1+hKe^{60n})^h.
+\end{equation}
+This direct proof does not require any estimate for complementary minors.
+
+\begin{proposition}[Local decay]\label{prop:local}
+For fixed $r$, all sufficiently large $n$ with $Q_n\ne0$ satisfy
+\[
+ |x-\theta|\leq e^{-120n}
+       \quad\Longrightarrow\quad |P_n(x)|\leq e^{-3n^2/10}.
+\]
+\end{proposition}
+\begin{proof}
+Take $\varepsilon=1/100$ in \eqref{eq:arith} and
+Lemma~\ref{lem:energy}. In \eqref{eq:perturb} use
+$E=H_n(x)-H_n(\theta)$ and $K=|x-\theta|e^{50n}$. Then
+\[
+ |\widetilde Q_n(x)|\leq
+      e^{-5.99n^2}(1+3n e^{-10n})^{3n}
+      \leq e^{-5.99n^2+3n},
+\]
+since $3n\leq e^{10n}$ and $2^{3n}\leq e^{3n}$. Multiplication by
+$d_n\leq e^{5.67n^2}$ gives $|P_n(x)|\leq e^{-0.32n^2+3n}$.
+For $n\geq150$, this is at most $e^{-0.30n^2}$.
+\end{proof}
+
+\section{Selecting a prime and extracting an exponent}
+
+An elementary Chebyshev estimate gives, eventually in real $u$,
+\[
+       \sum_{u<p\leq3u}\log p>u/4.
+\]
+Our Catalan development proves this as
+\texttt{eventually\_primeLogInterval\_gt\_quarter}; no prime number
+theorem is needed at this step. Put $u=20\log q$. If all primes in this
+window divided $q$, their product would divide $q$ and the displayed
+sum would be at most $\log q$, contradicting its lower bound
+$5\log q$. Any fixed finite prime exclusions can be placed below the
+window by increasing the threshold for $q$.
+
+\begin{theorem}[Quantitative extension]\label{thm:bound}
+For every fixed $r\in\Q$, there exists $q_0(r)$ such that every reduced
+rational number $a/q$, with $a\in\Z$ and $q\in\mathbb N$, satisfies
+\[
+ \left|\zeta(3)-r\zeta(2)-\frac aq\right|>q^{-10000}
+       \qquad(q\geq q_0(r)).
+\]
+In particular,
+$2\leq\mu(\zeta(3)-r\zeta(2))\leq10000$.
+\end{theorem}
+\begin{proof}
+Choose a prime $p\nmid q$ with
+$20\log q<p\leq60\log q$, above all fixed cutoffs for
+\eqref{eq:edge} and Proposition~\ref{prop:local}; put $n=p-1$.
+Eventually,
+\[
+                     19\log q<n\leq60\log q.
+\]
+In particular $p\nmid\operatorname{den}(r)$.
+If $|\theta-a/q|\leq q^{-10000}$, then
+\[
+ q^{-10000}\leq e^{-120n},
+ \qquad
+ |P_n(a/q)|\leq e^{-3n^2/10}<q^{-3n}.
+\]
+For the strict last inequality it suffices that $n>10\log q$.
+On the other hand, \eqref{eq:edge} implies $P_n(a/q)\ne0$, since $q$ is
+invertible modulo $p$. As $\deg P_n\leq3n$, the number $q^{3n}P_n(a/q)$
+is a nonzero integer. Thus $|P_n(a/q)|\geq q^{-3n}$, a contradiction.
+The lower bound $2$ follows from the upstream irrationality theorem and
+Dirichlet's approximation theorem.
+\end{proof}
+
+\section{Formal verification and scope}
+
+This argument proves a finite exponent with explicit numerical constant,
+using the cited upstream construction. No uniformity in the threshold
+$q_0(r)$ as the height of $r$ grows is asserted. Consequently
+it is not a simultaneous linear-independence measure for arbitrary varying
+coefficients of $1,\zeta(2),\zeta(3)$. The case $r=0$ already has classical,
+much better finite bounds; the intended new targets have $r\ne0$.
+
+All parts of the direct proof compile in Lean. The final theorem names are
+\begin{center}
+\texttt{Zeta32Extension.denominator\_bound},\\
+\texttt{Zeta32Extension.irrationalityExponent\_bounds}.
+\end{center}
+Their only parameter is $r:\Q$; no analytic estimate is assumed. An
+explicit audit checks all 123 extension theorems and permits only
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+A fresh-kernel replay passed for 21 selected roots and their full closure
+of 82674 declarations, including both unconditional endpoints.
+The originally considered theorem
+\begin{center}\texttt{denominator\_bound\_of\_uniformMinors}\end{center}
+remains conditional in the
+source, but is not needed to discharge the final bound. Merely auditing
+that conditional statement would not have proved the present result.
+
+Reproduction commands and pinned dependency versions are provided in
+\texttt{anc/README.txt} in the source archive. The replay uses Lean's own
+kernel. The argument does not compute a numerical value of $q_0(r)$.
+
+Dauguet--Zudilin (2014)~\cite{DZ},
+\href{https://arxiv.org/abs/1401.5322}{\emph{On simultaneous diophantine
+approximations to $\zeta(2)$ and $\zeta(3)$}}, bounds certain restricted
+linear forms, not an unrestricted finite exponent for each such difference.
+The recent qualitative result of Tang is an essential acknowledged input.
+
+\paragraph{Acknowledgement.}
+The mathematical development, Lean formalization, and preparation of this
+manuscript were carried out with substantial assistance from OpenAI Codex.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{Tang}
+Q. Tang, \emph{zeta2-zeta3-linear-independence}, Lean development,
+September 2026. Pinned revision specified in Section~1.
+\url{https://github.com/dtq1997/zeta2-zeta3-linear-independence}.
+
+\bibitem{DZ}
+S. Dauguet and W. Zudilin,
+\emph{On simultaneous diophantine approximations to $\zeta(2)$ and
+$\zeta(3)$}, 2014. \url{https://arxiv.org/abs/1401.5322}.
+
+\bibitem{OpenAI}
+OpenAI, \emph{math}: formal developments accompanying
+\emph{Catalan's constant is irrational} and
+\emph{The irrationality exponent of pi is 2}, September 2026.
+\url{https://github.com/openai/math}.
+Only the elementary approximation-exponent and Hilbert determinant lemmas
+identified in the source attribution are adapted here; neither endpoint
+theorem is used as an assumption.
+\end{thebibliography}
+\end{document}

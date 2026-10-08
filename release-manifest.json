@@ -1,0 +1,13 @@
+{
+  "paper": "zeta32-measure",
+  "title": "An explicit irrationality-exponent bound for ζ(3) − rζ(2): A Lean-verified quantitative extension",
+  "version": "v1",
+  "source_members": 163,
+  "files": {
+    "README.txt": "01009418c29bec2c52617a8f9e62fd68e6254cbbc2999792d102c0185a9cd4f5",
+    "RIGHTS.txt": "7349c8f44b2692366fab602c2b1eb4f71c89da70f9c8d416b66f15831584b637",
+    "SHA256SUMS.txt": "526267657a99eb3afaec92945f1838d23ba1a9fb0d28b56e8f5754de91c9f079",
+    "zeta32-measure-v1-sources.zip": "edde419c9eedda1de41bf07ac7c81fa19ca430187af0a2e5788703ce0cb1c2b2",
+    "zeta32-measure-v1.pdf": "f0410de6a4a721f1e7735163e09dc2809c069f9a42215b011d78e14ddba80646"
+  }
+}
