@@ -2,6 +2,8 @@
 
 Rohit Kumar Jha
 
+[Zenodo record](https://zenodo.org/records/23243238) · [DOI: 10.5281/zenodo.23243238](https://doi.org/10.5281/zenodo.23243238)
+
 [Read the paper](release/zeta32-measure-v2.pdf) · [Version v2](https://github.com/rohitkrjha/zeta32-measure/releases/tag/v2) · [LaTeX source](sources/main.tex) · [Lean project](sources/anc/lean)
 
 ## Version v2
@@ -64,9 +66,9 @@ The GitHub Actions workflow checks publication-file integrity only. It does not 
 
 ## Citation and versions
 
-Use the repository's **Cite this repository** control or [CITATION.cff](CITATION.cff). Version v2 identifies the manuscript and source package in this release. A Zenodo DOI will be added once the corresponding record has been reserved or published; no DOI is claimed here.
+Use the repository's **Cite this repository** control or [CITATION.cff](CITATION.cff). Version v2 identifies the manuscript and source package in this release. The matching preprint is archived on [Zenodo](https://zenodo.org/records/23243238) with version-specific DOI [10.5281/zenodo.23243238](https://doi.org/10.5281/zenodo.23243238).
 
-The first Zenodo deposit is prepared as version v1, corresponding to GitHub release v2; it has not yet been published on Zenodo. The deposited files retain their GitHub release filenames and bundled README version label so that all five files match the release byte-for-byte. These are separate version labels; do not substitute the earlier GitHub release for the prepared deposit.
+Zenodo version v1 corresponds to GitHub release v2. The deposited files retain their GitHub release filenames and bundled README version label so that all five files match the release byte-for-byte. These are separate version labels; do not substitute the earlier GitHub release for this deposit.
 
 Substantive changes to the manuscript or proof will receive a new release rather than changing the v2 tag. Later citation-only metadata updates may appear on the main branch without changing the v2 mathematical sources.
 

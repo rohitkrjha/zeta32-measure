@@ -17,5 +17,7 @@ preferred-citation:
     - family-names: Jha
       given-names: Rohit Kumar
   year: 2026
-  version: v2
-  url: "https://github.com/rohitkrjha/zeta32-measure/releases/tag/v2"
+  version: v1
+  url: "https://zenodo.org/records/23243238"
+  doi: "10.5281/zenodo.23243238"
+  date-published: "2026-10-08"
